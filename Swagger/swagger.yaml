@@ -1,0 +1,142 @@
+openapi: 3.0.3
+info:
+  title: Typescript Boilerplate - OpenAPI 3.0
+  description: |-
+    A signup and login system is a fundamental component of many web applications that enables users to create an account, authenticate their identity, and access personalized features and data. 
+
+    Signup: The signup process allows users to create a new account by providing necessary information.
+    Login: The login process enables users to authenticate themselves and gain access to their account and associated functionalities.
+
+servers:
+  - url: http://localhost:4000/
+tags:
+  - name: Signup-API
+    description: user will signup
+    externalDocs:
+      description: Find out more
+      url: https://asif-mehmood.com
+  - name: Login-API
+    description: user will login
+    externalDocs:
+      description: Find out more
+      url: https://asif-mehmood.com
+  - name: Get-User-API
+    description: user will login
+    externalDocs:
+      description: Find out more
+      url: https://asif-mehmood.com
+  - name: Update-User-API
+    description: user will login
+    externalDocs:
+      description: Find out more
+      url: https://asif-mehmood.com
+  - name: Delete-User-API
+    description: user will login
+    externalDocs:
+      description: Find out more
+      url: https://asif-mehmood.com
+
+paths:
+  /users:
+    post:
+      tags:
+        - Signup-API
+      summary: Add a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEntity'
+      responses:
+        201:
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        500:
+          description: Internal server error
+
+  /users/{id}:
+    get:
+      tags:
+        - Get-User-API
+      summary: Get a user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserEntity'
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+
+    put:
+      tags:
+        - Update-User-API
+      summary: Update a user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserEntity'
+      responses:
+        200:
+          description: Success
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+
+    delete:
+      tags:
+        - Delete-User-API
+      summary: Delete a user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Success
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    UserEntity:
+      type: object
+      properties:
+        name:
+          type: string
+          example: 'Asif Mehmood'
+        email:
+          type: string
+          example: 'asif-mehmood@hotmail.com'
+        password:
+          type: string
+          example: 'asifMehmood123'
