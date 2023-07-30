@@ -11,8 +11,10 @@ import AuthenticatedRequest from '../interfaces/AuthenticateRequest';
 import { UserDataEntity } from '../Entity/userDataEntity';
 import { UserDataDTO } from '../DTO/userDataDTO';
 import createValidationDecorator from '../Decorators/validationDecorator';
-import { nameEmailPasswordSchema } from '../Utils/zodValidationSchema';
+import { loginSchema, signUpSchema } from '../Utils/zodValidationSchema';
 
+const createUserValidation = createValidationDecorator(signUpSchema);
+const loginUserValidation = createValidationDecorator(loginSchema);
 export class UserController {
   private userService: UserService;
   private mailService: MailService; // Add an instance of the MailService class
@@ -37,7 +39,7 @@ export class UserController {
   // createUser = async (req: Request, res: Response): Promise<void> => {
 
   @hashPassword
-  @createValidationDecorator<UserDTO>(nameEmailPasswordSchema)
+  @createUserValidation
   async createUser(req: Request, res: Response): Promise<void> {
     try {
       const { name, email, password } = req.body as UserDTO;
@@ -65,7 +67,7 @@ export class UserController {
     }
   }
 
-  @createValidationDecorator<UserDTO>(nameEmailPasswordSchema)
+  @loginUserValidation
   async loginUser(req: Request, res: Response): Promise<void | Response> {
     try {
       const { email, password } = req.body as UserDTO;

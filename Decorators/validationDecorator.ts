@@ -1,4 +1,4 @@
-import { ZodError, ZodSchema, ZodTypeAny } from 'zod';
+import { ZodError, ZodSchema } from 'zod';
 import { Request, Response } from 'express';
 
 function createValidationDecorator<T>(schema: ZodSchema<T>) {
@@ -17,7 +17,7 @@ function createValidationDecorator<T>(schema: ZodSchema<T>) {
         if (error instanceof ZodError) {
           res.status(400).json({
             error: 'Validation failed',
-            details: `Error in ${error.errors[0].path} field : ${error.errors[0].message}`,
+            details: error.errors.map((err) => `${err.path} : ${err.message}`),
           });
         } else {
           res.status(500).json({ error: 'Failed to process request' });
